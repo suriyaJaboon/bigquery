@@ -43,7 +43,8 @@ func main()  {
 	}
 	route := gin.Default()
 	route.Use(settings.Cores())
-	routers.InitRoutes(route)
+	v1 := route.Group("/v1")
+	routers.InitRoutes(v1)
 	route.Run(":8090")
 }
 

@@ -5,14 +5,13 @@ import (
 	"query/services"
 )
 
-func AuthenticationRoute(route *gin.Engine) *gin.Engine {
+func AuthenticationRoute(route *gin.RouterGroup) {
 	auth := route.Group("/auth")
-	//auth.Use(Authorize()) {
+	//route.Use(Authorize()) {
 		auth.GET("", services.GetAuth)
 		auth.GET(":id", services.GetIdAuth)
 		auth.POST("", services.CreateAuth)
 		auth.PUT(":id", services.UpdateAuth)
 		auth.DELETE(":id", services.DeleteAuth)
-	// }
-	return route
+	//}
 }
