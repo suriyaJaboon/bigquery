@@ -6,12 +6,10 @@ import (
 )
 
 func AuthenticationRoute(route *gin.RouterGroup) {
-	auth := route.Group("/auth")
+	//auth := route.Group("/auth")
+	auth := route
 	//route.Use(Authorize()) {
-		auth.GET("", services.GetAuth)
-		auth.GET(":id", services.GetIdAuth)
-		auth.POST("", services.CreateAuth)
-		auth.PUT(":id", services.UpdateAuth)
-		auth.DELETE(":id", services.DeleteAuth)
+		auth.POST("/login", services.Login)
+		auth.POST("/logout", services.Logout)
 	//}
 }

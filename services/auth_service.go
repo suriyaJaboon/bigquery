@@ -1,23 +1,29 @@
 package services
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/gin-gonic/gin"
+	"query/cores/authentication"
+	"query/models"
+	"net/http"
+)
 
-func GetAuth(c *gin.Context) {
-	c.JSON(200, gin.H{"name": "development_auth", "fullName": "bar_auth..."})
+func Login(c *gin.Context) {
+	var user *models.Users
+	c.Bind(&user)
+	auThen := authentication.NewJWTAuthenticationBackend()
+	if auThen.Authenticate(user) {
+		toKen, err := auThen.GenerateToken(user.UUID)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, "Server Error")
+		} else {
+			c.JSON(http.StatusOK, models.TokenAuthentication{toKen})
+			//c.Abort()
+		}
+	}
+	//c.JSON(http.StatusUnauthorized, "Unauthorized")
 }
 
-func GetIdAuth(c *gin.Context) {
+func Logout(c *gin.Context) {
 
 }
 
-func CreateAuth(c *gin.Context) {
-
-}
-
-func UpdateAuth(c *gin.Context) {
-
-}
-
-func DeleteAuth(c *gin.Context) {
-
-}
