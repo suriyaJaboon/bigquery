@@ -5,3 +5,7 @@ type Users struct {
 	Username string `json:"username" form:"username"`
 	Password string `json:"password" form:"password"`
 }
+
+type TokenAuthentication struct {
+	Token string `json:"token" form:"token"`
+}
