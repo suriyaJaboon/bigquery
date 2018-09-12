@@ -1,0 +1,5 @@
+{
+  "PrivateKeyPath": "/home/tom/go/src/query/settings/keys/private_key",
+  "PublicKeyPath": "/home/tom/go/src/query/settings/keys/public_key.pub",
+  "JWTExpirationDelta": 72
+}
