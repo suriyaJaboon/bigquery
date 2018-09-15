@@ -1,4 +1,4 @@
-package models
+package structs
 
 type Users struct {
 	UUID     string `json:"uuid" form:"-"`
@@ -7,5 +7,7 @@ type Users struct {
 }
 
 type TokenAuthentication struct {
+	Status int `json:"status" form:"status"`
 	Token string `json:"token" form:"token"`
+	Message string `json:"message" form:"message"`
 }

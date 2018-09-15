@@ -2,16 +2,14 @@ package routers
 
 import (
 	"github.com/gin-gonic/gin"
-	"query/services"
+	"github.com/suriyajaboon/bigquery/controllers"
 )
 
 func UserRoute(route *gin.RouterGroup) {
 	user := route.Group("/user")
-	//auth.Use(Authorize()) {
-		user.GET("", services.GetUser)
-		user.GET(":id", services.GetIdUser)
-		user.POST("", services.CreateUser)
-		user.PUT(":id", services.UpdateUser)
-		user.DELETE(":id", services.DeleteUser)
-	// }
+	user.GET("", controllers.CreateUserController)
+	//user.GET(":id", repositories.GetIdUser)
+	//user.POST("", repositories.CreateUser)
+	//user.PUT(":id", repositories.UpdateUser)
+	//user.DELETE(":id", repositories.DeleteUser)
 }
