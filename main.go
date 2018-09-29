@@ -2,16 +2,15 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
-	"query/settings"
-	"query/routers"
+	"github.com/suriyajaboon/bigquery/settings"
+	"github.com/suriyajaboon/bigquery/routers"
 )
 
 func main()  {
 	settings.Init()
 	route := gin.Default()
 	route.Use(settings.Cores())
-	v1 := route.Group("/v1")
-	routers.InitRoutes(v1)
+	routers.InitRoutes(route)
 	route.Run(":8090")
 }
 

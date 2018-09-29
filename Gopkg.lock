@@ -36,8 +36,8 @@
     "internal/singleflight",
     "internal/util"
   ]
-  revision = "83fb42932f6145ce52df09860384a4653d2d332a"
-  version = "v6.12.0"
+  revision = "f3bba01df2026fc865f7782948845db9cf44cf23"
+  version = "v6.14.1"
 
 [[projects]]
   name = "github.com/golang/protobuf"
@@ -66,7 +66,7 @@
     "jlexer",
     "jwriter"
   ]
-  revision = "efc7eb8984d6655c26b5c9d2e65c024e5767c37c"
+  revision = "60711f1a8329503b04e1c88535f419d0bb440bff"
 
 [[projects]]
   name = "github.com/mattn/go-isatty"
@@ -93,8 +93,8 @@
     "config",
     "uritemplates"
   ]
-  revision = "229adca7643e572e471ea3e8e018d651b728713d"
-  version = "v6.1.25"
+  revision = "e6cae211ee802eab70248a68fe2cb03b616744c9"
+  version = "v6.2.5"
 
 [[projects]]
   name = "github.com/pborman/uuid"
@@ -144,6 +144,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "731eff2761d46942b065743683e42e0dc752fa0fee0be8b9c5f3ecfb288ce01a"
+  inputs-digest = "6cb5b23417dc052991cdb6b6a8c01cfb88a36e9680a2dc925474ca3b84388103"
   solver-name = "gps-cdcl"
   solver-version = 1

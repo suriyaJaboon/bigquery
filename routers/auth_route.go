@@ -2,14 +2,11 @@ package routers
 
 import (
 	"github.com/gin-gonic/gin"
-	"query/services"
+	"github.com/suriyajaboon/bigquery/controllers"
 )
 
 func AuthenticationRoute(route *gin.RouterGroup) {
 	//auth := route.Group("/auth")
-	auth := route
-	//route.Use(Authorize()) {
-		auth.POST("/login", services.Login)
-		auth.POST("/logout", services.Logout)
-	//}
+	//route.POST("/login", controllers.Login)
+	route.GET("/logout", controllers.Logout)
 }
