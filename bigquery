@@ -1,0 +1,177 @@
+#!/bin/bash
+#
+# Lab01 <summary>
+#
+# chkconfig:   2345 80 20
+# description: Starts and stops a single Lab01 instance on this system
+#
+
+### BEGIN INIT INFO
+# Provides: Lab01
+# Required-Start: $network $named
+# Required-Stop: $network $named
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
+# Short-Description: Starts and stops Lab01 node js
+# Description: Lab01
+### END INIT INFO
+
+PATH=/sbin:/usr/sbin:/bin:/usr/bin
+export PATH
+export GO_ENV="production"
+# Sets the default values for Lab01 variables used in this script
+APP_NAME="bigquery"
+USER="root"
+GROUP="$USER"
+GO_ENV="production"
+PORT="8090"
+APP_DIR="/opt/backend"
+KWARGS=""
+PID_DIR="/var/run/bigquery"
+PID_FILE="$PID_DIR/$APP_NAME.pid"
+LOG_DIR="/var/log/bigquery"
+LOG_FILE="$LOG_DIR/$APP_NAME.log"
+CONFIG_DIR="$APP_DIR/config/"
+
+exec="${APP_DIR}/${APP_NAME}"
+lockfile="/var/lock/subsys/$APP_NAME"
+
+trace() {
+  logger -t "/etc/init.d/bigquery" "$@"
+}
+
+emit() {
+  trace "$@"
+  echo "$@"
+}
+
+start() {
+    # Ensure that the PID_DIR exists (it is cleaned at OS startup time)
+    if [ -n "$PID_DIR" ] && [ ! -e "$PID_DIR" ]; then
+        mkdir -p "$PID_DIR" && chown "$USER":"$GROUP" "$PID_DIR"
+    fi
+    if [ -n "$PID_FILE" ] && [ ! -e "$PID_FILE" ]; then
+        touch "$PID_FILE" && chown "$USER":"$GROUP" "$PID_FILE"
+    fi
+
+    # Ensure the log directory is setup correctly.
+    if [ -n "$LOG_DIR" ] && [ ! -e "$LOG_DIR" ]; then
+        mkdir -p "$LOG_DIR" && chown "$USER":"$GROUP" "$LOG_DIR"
+        chmod 755 "$LOG_DIR"
+    fi
+
+    #sh -c " cd \"$APP_DIR\" exec \"$exec\"" >> "$LOG_FILE" 2>> "$LOG_FILE" &
+
+    # Run the program!
+    # chroot --userspec "$USER":"$GROUP" "$APP_DIR"
+    sh -c "
+
+        cd \"$APP_DIR\"
+        exec \"$exec\"
+    " >> "$LOG_FILE" 2>> "$LOG_FILE" &
+
+    # Generate the pidfile from here. If we instead made the forked process
+    # generate it there will be a race condition between the pidfile writing
+    # and a process possibly asking for status.
+    echo $! > $PID_FILE
+
+    emit "$APP_NAME started"
+    return 0
+}
+
+stop() {
+  # Try a few times to kill TERM the program
+  if status ; then
+    pid=$(cat "$PID_FILE")
+    trace "Killing $APP_NAME (pid $pid) with SIGTERM"
+    kill -TERM $pid
+    # Wait for it to exit.
+    for i in 1 2 3 4 5 ; do
+      trace "Waiting $APP_NAME (pid $pid) to die..."
+      status || break
+      sleep 1
+    done
+    if status ; then
+      if [ "$KILL_ON_STOP_TIMEOUT" -eq 1 ] ; then
+        trace "Timeout reached. Killing $APP_NAME (pid $pid) with SIGKILL.  This may result in data loss."
+        kill -KILL $pid
+        emit "$APP_NAME killed with SIGKILL."
+      else
+        emit "$APP_NAME stop failed; still running."
+      fi
+    else
+      emit "$APP_NAME stopped."
+    fi
+  fi
+}
+
+status() {
+  if [ -f "$PID_FILE" ] ; then
+    pid=$(cat "$PID_FILE")
+    if ps -p $pid > /dev/null 2> /dev/null ; then
+      # process by this pid is running.
+      # It may not be our pid, but that's what you get with just pidfiles.
+      # TODO(sissel): Check if this process seems to be the same as the one we
+      # expect. It'd be nice to use flock here, but flock uses fork, not exec,
+      # so it makes it quite awkward to use in this case.
+      return 0
+    else
+      return 2 # program is dead but pid file exists
+    fi
+  else
+    return 3 # program is not running
+  fi
+}
+
+force_stop() {
+  if status ; then
+    stop
+    status && kill -KILL $(cat "$PID_FILE")
+  fi
+}
+
+case "$1" in
+  force-start|start|stop|force-stop|restart)
+    trace "Attempting '$1' on $APP_NAME"
+    ;;
+esac
+
+case "$1" in
+  force-start)
+    PRESTART=no
+    exec "$0" start
+    ;;
+  start)
+    status
+    code=$?
+    if [ $code -eq 0 ]; then
+      emit "$APP_NAME is already running"
+      exit $code
+    else
+      start
+      exit $?
+    fi
+    ;;
+  stop) stop ;;
+  force-stop) force_stop ;;
+  status)
+    status
+    code=$?
+    if [ $code -eq 0 ] ; then
+      emit "$APP_NAME is running"
+    else
+      emit "$APP_NAME is not running"
+    fi
+    exit $code
+    ;;
+  restart)
+
+    stop && start
+    ;;
+  *)
+    echo "Usage: $0 {start|force-start|stop|force-stop|status|restart}" >&2
+    exit 3
+  ;;
+esac
+
+exit $?
