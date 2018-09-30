@@ -7,7 +7,7 @@ import (
 )
 
 func InitRoutes(ge *gin.Engine) {
-	ge.POST("/login", controllers.Login)
+	ge.POST("/api/login", controllers.Login)
 	route := ge.Group("/v1", cores.JWTAuthMiddleware())
 	AuthenticationRoute(route)
 	UserRoute(route)
