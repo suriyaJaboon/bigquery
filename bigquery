@@ -19,12 +19,11 @@
 PATH=/sbin:/usr/sbin:/bin:/usr/bin
 export PATH
 export GO_ENV="production"
+export GO_PORT="8091"
 # Sets the default values for Lab01 variables used in this script
 APP_NAME="bigquery"
 USER="root"
 GROUP="$USER"
-GO_ENV="production"
-PORT="8090"
 APP_DIR="/opt/backend"
 KWARGS=""
 PID_DIR="/var/run/bigquery"
