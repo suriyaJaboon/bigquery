@@ -14,14 +14,15 @@ type Settings struct {
 
 var settings Settings = Settings{}
 var env = "development"
+var port = "8090"
 
 func Init() {
-	env := os.Getenv("GO_ENV")
+	env = os.Getenv("GO_ENV")
 	if env == "" {
 		env = "development"
 	}
 	setMode(env)
-	log.Println("Run Application Mode " + env)
+	log.Printf("Application Mode %s Run localhost:%s", env, GetPort())
 }
 
 func setMode(env string) {
@@ -36,6 +37,13 @@ func setMode(env string) {
 	}
 }
 
+func GetPort() string {
+	port = os.Getenv("GO_PORT")
+	if port == "" {
+		port = "8090"
+	}
+	return port
+}
 
 func GetEnvironment() string {
 	return env
