@@ -11,6 +11,6 @@ func main()  {
 	route := gin.Default()
 	route.Use(settings.Cores())
 	routers.InitRoutes(route)
-	route.Run(":8090")
+	route.Run( "localhost:8090")
 }
 
