@@ -26,6 +26,6 @@ func main()  {
 
 	route.Use(settings.Cores())
 	routers.InitRoutes(route)
-	route.Run( "localhost:8090")
+	route.Run( "localhost:" + settings.GetPort())
 }
 
