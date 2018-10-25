@@ -31,8 +31,9 @@ func setMode(env string) {
 		settings.PublicKeyPath = "/opt/keys/public_key.pub"
 		settings.JWTExpirationDelta = 72
 	} else {
-		settings.PrivateKeyPath = "/opt/keys/private_key"
-		settings.PublicKeyPath = "/opt/keys/public_key.pub"
+		const pathKey = "/Users/suriya/go/src/github.com/suriyajaboon/bin_bigquery/settings/keys"
+		settings.PrivateKeyPath = pathKey + "/private_key"
+		settings.PublicKeyPath = pathKey + "/public_key.pub"
 		settings.JWTExpirationDelta = 72
 	}
 }
