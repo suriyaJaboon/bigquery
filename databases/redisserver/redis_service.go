@@ -2,6 +2,7 @@ package redisserver
 
 import (
 	"github.com/go-redis/redis"
+	"github.com/suriyajaboon/bigquery/structs"
 )
 
 type IReDisServer interface {
@@ -9,20 +10,17 @@ type IReDisServer interface {
 }
 
 type RedisServer struct {
-	Host string
-	Port string
-	Password string
-	DB int
+	*structs.RedisServer
 }
-func RedisNewClient(rn *RedisServer) IReDisServer {
-	return &RedisServer{rn.Host, rn.Port, rn.Password, rn.DB}
+func RedisNewClient(r *RedisServer) IReDisServer {
+	return &RedisServer{&structs.RedisServer{r.Host, r.Port, r.User, r.Pass, r.DB}}
 }
 
-func (rs *RedisServer) RedisClient() *redis.Client {
+func (r *RedisServer) RedisClient() *redis.Client {
 	client := redis.NewClient(&redis.Options {
-		Addr: rs.Host + ":" + rs.Port,
-		Password: rs.Password,
-		DB: rs.DB,
+		Addr: r.Host + ":" + r.Port,
+		Password: r.Pass,
+		DB: r.DB,
 	})
 	return client
 }

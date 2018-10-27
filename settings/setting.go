@@ -1,41 +1,35 @@
 package settings
 
 import (
-	"os"
-	"log"
+	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/suriyajaboon/bigquery/structs"
+	"log"
+	"os"
+	"path/filepath"
 )
 
-type Settings struct {
-	PrivateKeyPath     string
-	PublicKeyPath      string
-	JWTExpirationDelta int
-}
-
-var settings Settings = Settings{}
-var env = "development"
-var port = "8090"
+var settings structs.SettingMode = structs.SettingMode{}
+var env string
+var port string
 
 func Init() {
 	env = os.Getenv("GO_ENV")
 	if env == "" {
 		env = "development"
 	}
-	setMode(env)
+	setMode()
 	log.Printf("Application Mode %s Run localhost:%s", env, GetPort())
 }
 
-func setMode(env string) {
-	if env == "production" {
-		settings.PrivateKeyPath = "/opt/keys/private_key"
-		settings.PublicKeyPath = "/opt/keys/public_key.pub"
-		settings.JWTExpirationDelta = 72
-	} else {
-		const pathKey = "/Users/suriya/go/src/github.com/suriyajaboon/bin_bigquery/settings/keys"
-		settings.PrivateKeyPath = pathKey + "/private_key"
-		settings.PublicKeyPath = pathKey + "/public_key.pub"
-		settings.JWTExpirationDelta = 72
+func setMode() {
+	conf, err := GetConfiguration()
+	if err != nil {
+		fmt.Println(err)
 	}
+	settings.PrivateKeyPath = conf.SettingMode.PrivateKeyPath
+	settings.PublicKeyPath = conf.SettingMode.PublicKeyPath
+	settings.JWTExpirationDelta = conf.SettingMode.JWTExpirationDelta
 }
 
 func GetPort() string {
@@ -50,11 +44,24 @@ func GetEnvironment() string {
 	return env
 }
 
-func Get() Settings {
+func Get() structs.SettingMode {
 	if &settings == nil {
 		Init()
 	}
 	return settings
+}
+
+func GetConfiguration() (*structs.ObjectType, error) {
+	var pathConf string
+	pathConf = "/Users/suriya/go/src/github.com/suriyajaboon/bigquery/" + GetEnvironment() + ".json"
+	if GetEnvironment() == "production" {
+		path, err := os.Executable()
+		if err != nil {
+			log.Printf("%v", err)
+		}
+		pathConf = filepath.Dir(path) + "/" + GetEnvironment() + ".json"
+	}
+	return LoadFile(pathConf)
 }
 
 func Cores() gin.HandlerFunc {

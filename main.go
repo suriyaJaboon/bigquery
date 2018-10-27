@@ -1,18 +1,23 @@
 package main
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/suriyajaboon/bigquery/settings"
 	"github.com/suriyajaboon/bigquery/routers"
-	"os"
+	"github.com/suriyajaboon/bigquery/settings"
 	"io"
+	"os"
 )
 
 func main()  {
 	settings.Init()
+	//Log file
 
-	// Log file
-	f, _ := os.Create("bigQuery.log")
+	conf, err := settings.GetConfiguration()
+	if err != nil {
+		fmt.Println(err)
+	}
+	f, _ := os.Create(conf.Logs.Application)
 	gin.DefaultWriter = io.MultiWriter(f)
 
 	// Configuration Production Mode

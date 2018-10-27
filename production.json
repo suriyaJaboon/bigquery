@@ -1,0 +1,39 @@
+{
+  "database": {
+    "postgresserver": [
+      {
+        "host": "localhost",
+        "port": "5432",
+        "user": "postgres",
+        "pass": "admin",
+        "db": "lab"
+      }
+    ],
+    "redisserver": [
+      {
+        "host": "localhost",
+        "port": "6379",
+        "user": "",
+        "pass": "",
+        "db": 0
+      }
+    ],
+    "elasticserver": [
+      {
+        "protocol": "http",
+        "host": "localhost",
+        "port": "9200"
+      }
+    ]
+  },
+  "settingmode": {
+    "private_key_path": "/Users/suriya/go/src/github.com/suriyajaboon/bigquery/settings/keys/private_key",
+    "public_key_path": "/Users/suriya/go/src/github.com/suriyajaboon/bigquery/settings/keys/keys/public_key.pub",
+    "jwt_expiration_delta": 72
+  },
+  "logs": {
+    "success": "",
+    "error": "",
+    "application": "./bigQuery.log"
+  }
+}

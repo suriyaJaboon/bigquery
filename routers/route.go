@@ -3,7 +3,7 @@ package routers
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/suriyajaboon/bigquery/controllers"
-	"github.com/suriyajaboon/bigquery/repositories/cores"
+	"github.com/suriyajaboon/bigquery/commons/cores"
 )
 
 func InitRoutes(ge *gin.Engine) {

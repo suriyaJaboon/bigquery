@@ -1,7 +1,7 @@
 package services
 
 import (
-	"github.com/suriyajaboon/bigquery/repositories/cores"
+	"github.com/suriyajaboon/bigquery/commons/cores"
 	"github.com/suriyajaboon/bigquery/structs"
 	"net/http"
 	"github.com/gin-gonic/gin/json"

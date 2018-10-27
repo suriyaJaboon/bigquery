@@ -8,8 +8,8 @@ import (
 func UserRoute(route *gin.RouterGroup) {
 	user := route.Group("/user")
 	user.GET("", controllers.CreateUserController)
-	//user.GET(":id", repositories.GetIdUser)
-	//user.POST("", repositories.CreateUser)
-	//user.PUT(":id", repositories.UpdateUser)
-	//user.DELETE(":id", repositories.DeleteUser)
+	//user.GET(":id", commons.GetIdUser)
+	//user.POST("", commons.CreateUser)
+	//user.PUT(":id", commons.UpdateUser)
+	//user.DELETE(":id", commons.DeleteUser)
 }

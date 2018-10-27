@@ -2,7 +2,7 @@ package controllers
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/suriyajaboon/bigquery/repositories/services"
+	"github.com/suriyajaboon/bigquery/services"
 	"github.com/suriyajaboon/bigquery/structs"
 	"net/http"
 )
